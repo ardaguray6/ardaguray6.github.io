@@ -11,12 +11,12 @@ jobs:
 
     steps:
     - name: Depoyu Kopyala
-      # actions/checkout@v3'ün tam uzunluktaki (40 karakter) SHA kodu:
-      uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+      # actions/checkout@v4'ün kesin, orijinal ve tam uzunluktaki SHA kodu:
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
     - name: Python Kur
-      # actions/setup-python@v4'ün tam uzunluktaki (40 karakter) SHA kodu:
-      uses: actions/setup-python@d90514395375797e31edbd07e86e082f42b36b4d
+      # actions/setup-python@v5'in kesin, orijinal ve tam uzunluktaki SHA kodu:
+      uses: actions/setup-python@f67e243001f182f45e3911db73613e90ec10522f
       with:
         python-version: '3.10'
 
