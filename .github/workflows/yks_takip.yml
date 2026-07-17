@@ -10,15 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Kodları kopyalamak için sadece en temel paketi kullanıyoruz
     - name: Depoyu Kopyala
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
-    # 2. setup-python paketini TAMAMEN eledik. Doğrudan sistemdeki Python'ı kullanıyoruz.
-    - name: Kütüphaneleri Yükle
+    - name: Kütüphaneleri Yükle ve Çalıştır
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install requests beautifulsoup4 twilio
-
-    - name: Kontrol Kodunu Çalıştır
-      run: python3 yks.py
+        python3 -u yks.py
