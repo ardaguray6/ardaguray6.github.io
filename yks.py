@@ -34,8 +34,8 @@ def duyurulari_kontrol_et():
     }
     
     try:
-        # timeout=10 ekledik ki site yanıt vermezse kod sonsuza kadar takılı kalmasın, 10 saniyede bir sonrakine geçsin
         print("🔗 ÖSYM sitesine bağlanılıyor...")
+        # 10 saniye içinde yanıt gelmezse bağlantıyı kesip hata vermesini sağladık
         response = requests.get(OSYM_URL, headers=headers, timeout=10)
         
         print(f"📡 Bağlantı durumu: {response.status_code}")
@@ -46,7 +46,6 @@ def duyurulari_kontrol_et():
         soup = BeautifulSoup(response.text, "html.parser")
         sayfa_metni = soup.get_text().lower()
         
-        # Log ekranında ne okuduğumuzu görelim
         print("📝 Sayfa içeriği başarıyla çekildi. Anahtar kelimeler aranıyor...")
         
         if "yks" in sayfa_metni and "sonuç" in sayfa_metni:
