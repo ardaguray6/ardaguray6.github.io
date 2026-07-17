@@ -24,7 +24,6 @@ def telefon_ara():
         print(f"❌ Arama sırasında bir hata oluştu: {e}")
 
 def duyurulari_kontrol_et():
-    # Gerçek bir tarayıcı gibi davranması için gelişmiş başlıklar
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -35,8 +34,7 @@ def duyurulari_kontrol_et():
     
     try:
         print("🔗 ÖSYM sitesine bağlanılıyor...")
-        # 10 saniye içinde yanıt gelmezse bağlantıyı kesip hata vermesini sağladık
-        response = requests.get(OSYM_URL, headers=headers, timeout=10)
+        response = requests.get(OSYM_URL, headers=headers, timeout=15)
         
         print(f"📡 Bağlantı durumu: {response.status_code}")
         if response.status_code != 200:
@@ -44,16 +42,38 @@ def duyurulari_kontrol_et():
             return False
 
         soup = BeautifulSoup(response.text, "html.parser")
-        sayfa_metni = soup.get_text().lower()
         
-        print("📝 Sayfa içeriği başarıyla çekildi. Anahtar kelimeler aranıyor...")
+        # Sayfadaki tüm linkleri (a etiketlerini) alıyoruz
+        tum_linkler = soup.find_all("a")
         
-        if "yks" in sayfa_metni and "sonuç" in sayfa_metni:
-            print("🎉 YKS Sonuç duyurusu tespit edildi!")
-            return True
+        print("\n🔍 --- DUYURULAR TAYFASI KONTROL EDİLİYOR ---")
+        
+        duyuru_sayisi = 0
+        for link in tum_linkler:
+            href = link.get("href", "")
+            metin = link.get_text().strip().lower()
+            
+            # ÖSYM'nin gerçek duyuru linkleri genellikle '/TR,' ile başlar
+            # Menü linklerini veya boş yazıları eliyoruz
+            if "/tr," in href.lower() and len(metin) > 15:
+                duyuru_sayisi += 1
+                
+                # Sadece en güncel ilk 10 duyuruyu ekrana yazdırıp kontrol edelim
+                if duyuru_sayisi <= 10:
+                    print(f"👉 Bulunan Duyuru #{duyuru_sayisi}: '{metin}'")
+                
+                # Anahtar kelime kontrolü (yks ve sonuç/açıklandı kelimeleri aynı başlıkta geçmeli)
+                if "yks" in metin and ("sonuç" in metin or "açıklandı" in metin):
+                    print(f"\n🎉 HEDEF BULUNDU! Duyuru başlığı: {metin}")
+                    return True
+                    
+        print("-------------------------------------------\n")
+        
+        if duyuru_sayisi == 0:
+            print("⚠️ Uyarı: Sayfada hiç geçerli duyuru linki tespit edilemedi! Sitenin yapısı değişmiş olabilir.")
             
     except requests.exceptions.Timeout:
-        print("⏱️ Zaman aşımı! ÖSYM sitesi çok yavaş yanıt verdi veya bağlantıyı engelledi.")
+        print("⏱️ Zaman aşımı! ÖSYM sitesi yanıt vermedi.")
     except Exception as e:
         print(f"❌ Kontrol sırasında hata oluştu: {e}")
     return False
@@ -64,4 +84,4 @@ if __name__ == "__main__":
     if aciklandi_mi:
         telefon_ara()
     else:
-        print("😴 Henüz açıklanmamış...")
+        print("😴 Yeni bir YKS duyurusu yok. Beklemeye devam...")
