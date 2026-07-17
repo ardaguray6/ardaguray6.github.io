@@ -8,7 +8,7 @@ import sys
 ACCOUNT_SID = "AC0177283e190c54406c88ba3829f73b57"
 AUTH_TOKEN = "b16d18bf4bbaaaecfa42c65ebdd08e86"
 TWILIO_NUMBER = "+14472235127"
-MY_NUMBER = "+905525886316"
+MY_NUMBER = "+905551638737"
 OSYM_URL = "https://www.osym.gov.tr/TR,21/duyurular.html"
 
 def telefon_ara():
