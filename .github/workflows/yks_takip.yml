@@ -10,19 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Kodları kopyalamak için sadece en temel paketi kullanıyoruz
     - name: Depoyu Kopyala
-      # actions/checkout@v4'ün kesin, orijinal ve tam uzunluktaki SHA kodu:
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
-    - name: Python Kur
-      # actions/setup-python@v5'in kesin, orijinal ve tam uzunluktaki SHA kodu:
-      uses: actions/setup-python@f67e243001f182f45e3911db73613e90ec10522f
-      with:
-        python-version: '3.10'
-
+    # 2. setup-python paketini TAMAMEN eledik. Doğrudan sistemdeki Python'ı kullanıyoruz.
     - name: Kütüphaneleri Yükle
       run: |
-        pip install requests beautifulsoup4 twilio
+        python3 -m pip install --upgrade pip
+        python3 -m pip install requests beautifulsoup4 twilio
 
     - name: Kontrol Kodunu Çalıştır
-      run: python yks.py
+      run: python3 yks.py
