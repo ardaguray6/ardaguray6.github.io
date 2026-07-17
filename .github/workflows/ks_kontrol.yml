@@ -11,10 +11,12 @@ jobs:
 
     steps:
     - name: Depoyu Kopyala
-      uses: actions/checkout@v3
+      # actions/checkout@v3 yerine onun tam SHA kodunu yazdık
+      uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
 
     - name: Python Kur
-      uses: actions/setup-python@v4
+      # actions/setup-python@v4 yerine onun tam SHA kodunu yazdık
+      uses: actions/setup-python@d27e3f3d7c64b4bbf85c13d9b353d10912340deb
       with:
         python-version: '3.10'
 
