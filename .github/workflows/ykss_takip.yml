@@ -2,7 +2,7 @@ name: YKS Sonuclari Kontrol Et
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/6 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,15 +11,17 @@ jobs:
     
     steps:
       - name: Depoyu Kopyala
-        uses: actions/checkout@v4   # ← Bunu güncelledim
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
       - name: Python Kurulumu
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
 
       - name: Kütüphaneleri Yükle ve Çalıştır
         run: |
           python -m pip install --upgrade pip
           python -m pip install requests beautifulsoup4 twilio
+          
+          echo "=== YKS KONTROL BAŞLADI ==="
+          echo "Tarih: $(date)"
           python -u yks.py
+          echo "=== YKS KONTROL BİTTİ ==="
